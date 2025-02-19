@@ -1,4 +1,4 @@
-package io.github.tml.domain.strategy;
+package io.github.tml.domain.strategy.degradation;
 
 /**
  * 描述: 降级策略接口

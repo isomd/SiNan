@@ -26,12 +26,18 @@ public interface ProxyPoolGateway {
     }
 
     List<ProxyWrapper> doFetchProxies(int batchSize);
-    
+
     /**
-     * 更新代理状态
-     * @param results 评估结果集合
+     * 批量添加代理到活跃池
+     * @param proxies 需要提升的代理
      */
-    void updateProxyStatus(Collection<EvaluationResult> results);
+    int promoteToActive(Collection<ProxyWrapper> proxies);
+
+    /**
+     * 批量降级代理到候选池
+     * @param proxyIds 需要降级的代理ID
+     */
+    int demoteToCandidate(Collection<String> proxyIds);
     
     /**
      * 获取当前池中代理数量

@@ -5,7 +5,7 @@ package io.github.tml.domain;
  * @author suifeng
  * 日期: 2025/2/19
  */
-public interface ProxyMonitor {
+public interface ProxyMonitor extends AutoCloseable {
     
     /**
      * 初始化监控系统
