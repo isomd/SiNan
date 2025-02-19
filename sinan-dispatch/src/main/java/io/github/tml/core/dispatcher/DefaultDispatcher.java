@@ -3,15 +3,14 @@ package io.github.tml.core.dispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-public class RequestDispatcher implements Dispatcher {
+public class DefaultDispatcher implements Dispatcher {
     private final Integer MAX_RETRY_TIMES = 3;
 
     @Override
-    public Response request(OkHttpClient client, Request request) {
+    public Response dispatch(OkHttpClient client, Request request) {
         try(Response res = call(client, request)) {
             return res;
         } catch (IOException e) {

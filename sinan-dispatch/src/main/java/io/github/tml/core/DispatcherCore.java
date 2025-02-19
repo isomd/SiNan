@@ -2,16 +2,18 @@ package io.github.tml.core;
 
 import io.github.tml.common.ProxyIp;
 import io.github.tml.core.dispatcher.Dispatcher;
-import io.github.tml.core.dispatcher.RequestDispatcher;
+import io.github.tml.core.dispatcher.DefaultDispatcher;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class DispatcherCore {
     private static final Logger log = LoggerFactory.getLogger(DispatcherCore.class);
 
@@ -19,14 +21,14 @@ public class DispatcherCore {
 
     private final ConcurrentHashMap<ProxyIp, OkHttpClient> clients;
 
-//    @Value("${dispatch.max-proxy-acquisition:3}")
-    private Integer MAX_PROXY_ACQUISITION_TIMES = 3;
+    @Value("${dispatch.max-proxy-acquisition:3}")
+    private Integer MAX_PROXY_ACQUISITION_TIMES;
 
-//    @Value("${dispatch.max-retry:3}")
+    @Value("${dispatch.max-retry:3}")
     private Integer MAX_RETRY_TIMES = 3;
 
     public DispatcherCore() {
-        dispatcher = new RequestDispatcher();
+        dispatcher = new DefaultDispatcher();
         clients = new ConcurrentHashMap<>();
     }
 
@@ -45,7 +47,7 @@ public class DispatcherCore {
                 client = ClientFactory.create(proxy);
                 clients.put(proxy, client);
             }
-            if((res = dispatcher.request(client, request)) != null || (res = dispatcher.retry(client, request)) != null){
+            if((res = dispatcher.dispatch(client, request)) != null || (res = dispatcher.retry(client, request)) != null){
                 return res;
             } else {
                 // 归还当前代理并获取新的代理重试
