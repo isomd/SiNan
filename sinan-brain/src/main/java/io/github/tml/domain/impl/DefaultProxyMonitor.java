@@ -4,7 +4,6 @@ import io.github.tml.domain.ProxyMonitor;
 
 public class DefaultProxyMonitor implements ProxyMonitor {
 
-
     @Override
     public void initialize() {
 
