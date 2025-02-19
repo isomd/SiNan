@@ -22,13 +22,12 @@ public class RequestDispatcher implements Dispatcher {
 
     @Override
     public Response retry(OkHttpClient client, Request request) {
-        try {
-            Response res;
-            for(int i=0; i<MAX_RETRY_TIMES; i++) {
-                if((res = call(client, request)) != null) return res;
+        for(int i=0; i<MAX_RETRY_TIMES; i++) {
+            try {
+                return call(client, request);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }
