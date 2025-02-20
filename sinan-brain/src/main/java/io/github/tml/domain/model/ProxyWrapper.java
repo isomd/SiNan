@@ -12,9 +12,24 @@ import java.time.LocalDateTime;
  */
 @Data
 public class ProxyWrapper {
+
     private final String proxyId;
     private final InetSocketAddress endpoint;
     private final LocalDateTime lastChecked;
     private final double responseTime;
     private final double successRate;
+
+    private volatile EvaluationResult evaluationResult;
+
+    public ProxyWrapper withEvaluation(EvaluationResult result) {
+        ProxyWrapper wrapper = new ProxyWrapper(
+                this.proxyId,
+                this.endpoint,
+                LocalDateTime.now(), 
+                this.responseTime,
+                this.successRate
+        );
+        wrapper.evaluationResult = result;
+        return wrapper;
+    }
 }

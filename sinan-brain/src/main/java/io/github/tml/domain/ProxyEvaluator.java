@@ -15,22 +15,17 @@ public interface ProxyEvaluator {
     
     /**
      * 评估代理质量
-     * @param proxyWrapper 代理包装对象
-     * @return 评估结果对象
      */
-    EvaluationResult evaluate(ProxyWrapper proxyWrapper);
+    EvaluationResult evaluate(ProxyWrapper proxyWrapper, EvaluationMode mode);
 
-    /**
-     * 批量评估默认实现
-     * @param proxies 代理集合
-     * @return 评估结果列表
-     */
-    default List<EvaluationResult> evaluateBatch(List<ProxyWrapper> proxies) {
-        if (proxies == null) {
-            throw new IllegalArgumentException("Proxy list cannot be null");
-        }
+    enum EvaluationMode {
+        QUICK,
+        FULL
+    }
+
+    default List<ProxyWrapper> evaluateBatch(List<ProxyWrapper> proxies, EvaluationMode mode) {
         return proxies.parallelStream()
-                .map(this::evaluate)
+                .map(p -> p.withEvaluation(evaluate(p, mode)))
                 .collect(Collectors.toList());
     }
 }

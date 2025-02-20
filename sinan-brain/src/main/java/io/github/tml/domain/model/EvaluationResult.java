@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * 描述: 评估结果对象
@@ -14,20 +15,28 @@ import java.time.LocalDateTime;
 @Data
 public class EvaluationResult {
 
-    private final String proxyId;
-    private final double score;
-    private final EvaluationStatus status;
-    private final LocalDateTime evaluatedAt;
-    
+    private EvaluationType evaluationType; // 新增评估类型
+    private double score;
+    private EvaluationStatus status;
+    private LocalDateTime evaluatedAt;
+    private Map<String, Object> metrics; // 详细指标数据
+
     public enum EvaluationStatus {
         ACTIVE, CANDIDATE, DISCARDED
     }
 
-    public boolean isQualifiedForPool(double threshold) {
-        return status == EvaluationStatus.ACTIVE && score >= threshold;
+    public enum EvaluationType {
+        QUICK_CHECK,
+        FULL_EVALUATION
     }
 
-    public boolean shouldDemoteToCandidate(double demoteThreshold) {
-        return score < demoteThreshold && score >= demoteThreshold * 0.6;
+    public boolean isQualifiedForPool(double threshold) {
+        return status == EvaluationStatus.ACTIVE
+                && evaluationType == EvaluationType.QUICK_CHECK
+                && score >= threshold;
+    }
+
+    public EvaluationResult transition(EvaluationStatus newStatus) {
+        return EvaluationResult.builder().score(this.score).status(newStatus).evaluatedAt(LocalDateTime.now()).build();
     }
 }

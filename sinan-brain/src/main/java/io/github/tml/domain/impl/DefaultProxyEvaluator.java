@@ -7,8 +7,6 @@ import io.github.tml.domain.strategy.scoring.ScoringStrategy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 /**
  * 描述: 评估器默认实现
  * @author suifeng
@@ -18,17 +16,28 @@ import java.time.LocalDateTime;
 @Component
 public class DefaultProxyEvaluator implements ProxyEvaluator {
 
-    private final ScoringStrategy scoringStrategy;
+    private final ScoringStrategy quickScoring;
+    private final ScoringStrategy fullScoring;
 
     @Override
-    public EvaluationResult evaluate(ProxyWrapper proxyWrapper) {
-        // 计算分数
-        double score = scoringStrategy.countScore(proxyWrapper);
+    public EvaluationResult evaluate(ProxyWrapper proxyWrapper, EvaluationMode mode) {
+        switch (mode) {
+            case QUICK:
+                return doQuickEvaluation(proxyWrapper);
+            case FULL:
+                return doFullEvaluation(proxyWrapper);
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
 
-        return EvaluationResult.builder()
-                .proxyId(proxyWrapper.getProxyId())
-                .score(score)
-                .evaluatedAt(LocalDateTime.now())
-                .build();
+    private EvaluationResult doQuickEvaluation(ProxyWrapper proxy) {
+        double score = quickScoring.countScore(proxy);
+        return null;
+    }
+
+    private EvaluationResult doFullEvaluation(ProxyWrapper proxy) {
+        double score = fullScoring.countScore(proxy);
+        return null;
     }
 }
