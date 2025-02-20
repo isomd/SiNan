@@ -24,7 +24,6 @@ public interface ProxyPoolGateway {
         }
         return doFetchProxies(batchSize);
     }
-
     List<ProxyWrapper> doFetchProxies(int batchSize);
 
     /**
