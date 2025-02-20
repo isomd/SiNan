@@ -12,8 +12,14 @@ import javax.validation.constraints.*;
 @Getter
 public class MonitorProperties {
 
-    // 初始化配置
+    /**
+     * 初始化配置参数
+     * - loadSize: 初始加载代理数量
+     * - initThreshold: 初始合格阈值
+     * - evaluation: 评估相关配置
+     */
     private Initial initial = new Initial();
+    private Evaluation evaluation = new Evaluation();
 
     @Data
     public static class Initial {
@@ -23,8 +29,23 @@ public class MonitorProperties {
 
         @DecimalMin("0.5") @DecimalMax("1.0")
         private double initThreshold = 0.8;  // 初始合格阈值
+    }
 
-        @Min(1)
-        private int retryTimes = 3;  // 初始化失败重试次数
+    @Data
+    public static class Evaluation {
+        private Quick quick = new Quick();
+        private Full full = new Full();
+
+        @Data
+        public static class Quick {
+            private double passThreshold = 0.7;
+            private int timeoutMs = 500;
+        }
+
+        @Data
+        public static class Full {
+            private double passThreshold = 0.85;
+            private int timeoutMs = 3000;
+        }
     }
 }

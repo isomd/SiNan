@@ -1,4 +1,4 @@
-package io.github.tml.domain;
+package io.github.tml.delegate;
 
 /**
  * 描述: 监控器接口

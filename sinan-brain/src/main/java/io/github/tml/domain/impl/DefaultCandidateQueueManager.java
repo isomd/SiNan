@@ -1,21 +1,46 @@
 
 package io.github.tml.domain.impl;
 
-import io.github.tml.domain.CandidateQueueManager;
+import io.github.tml.delegate.CandidateQueueManager;
 import io.github.tml.domain.gateway.PersistenceGateway;
+import io.github.tml.domain.model.EvaluationResult;
 import io.github.tml.domain.model.ProxyWrapper;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DefaultCandidateQueueManager implements CandidateQueueManager {
 
     private final PriorityBlockingQueue<ProxyWrapper> candidateQueue = new PriorityBlockingQueue<>(100, Comparator.comparingDouble(p -> p.getEvaluationResult().getScore())); // 按分数降序排列
+
     private final PersistenceGateway persistenceGateway;
+
+    @Override
+    public void batchAddToCandidate(List<ProxyWrapper> proxies) {
+        proxies.parallelStream()
+                .filter(this::isValidCandidate)
+                .forEach(p -> {
+                    if (!candidateQueue.offer(p)) {
+
+                    }
+                });
+    }
+
+    private boolean isValidCandidate(ProxyWrapper proxy) {
+        return proxy.getEvaluationResult() != null
+                && proxy.getEvaluationResult().getStatus() != EvaluationResult.EvaluationStatus.DISCARDED;
+    }
+
+    @Override
+    public void addToCandidate(ProxyWrapper proxyWrapper) {
+
+    }
 
     @Override
     public void initializeCandidates() {
@@ -44,7 +69,11 @@ public class DefaultCandidateQueueManager implements CandidateQueueManager {
 
     @Override
     public List<ProxyWrapper> pollProxies(int count) {
-        return List.of();
+        List<ProxyWrapper> result = new ArrayList<>(count);
+        candidateQueue.drainTo(result, count);
+        return result.stream()
+                .filter(p -> p.getEvaluationResult() != null)
+                .collect(Collectors.toList());
     }
 
     @Override

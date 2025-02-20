@@ -1,4 +1,4 @@
-package io.github.tml.domain;
+package io.github.tml.delegate;
 
 import io.github.tml.domain.model.ProxyWrapper;
 
@@ -50,4 +50,8 @@ public interface CandidateQueueManager {
      * 获取当前队列大小
      */
     int queueSize();
+
+    void batchAddToCandidate(List<ProxyWrapper> proxyWrappers);
+
+    void addToCandidate(ProxyWrapper proxyWrapper);
 }
