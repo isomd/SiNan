@@ -7,7 +7,7 @@ import io.github.tml.delegate.ProxyEvaluator;
 import io.github.tml.domain.gateway.PersistenceGateway;
 import io.github.tml.domain.gateway.ProxyPoolGateway;
 import io.github.tml.domain.strategy.degradation.DegradationStrategy;
-import io.github.tml.domain.task.ComplexEvaluationTask;
+import io.github.tml.domain.task.FullEvaluationTask;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.util.concurrent.Executors;
@@ -20,7 +20,7 @@ public class ApplicationProxyMonitor extends InitializeProxyMonitor {
     private final DegradationStrategy degradationStrategy;
     private final ApplicationEventPublisher eventPublisher;
 
-    public ApplicationProxyMonitor(MonitorProperties properties, PersistenceGateway persistenceGateway, ProxyEvaluator evaluator, ProxyPoolGateway poolGateway, CandidateQueueManager queueManager, ComplexEvaluationTask complexTask, DegradationStrategy degradationStrategy, ApplicationEventPublisher eventPublisher) {
+    public ApplicationProxyMonitor(MonitorProperties properties, PersistenceGateway persistenceGateway, ProxyEvaluator evaluator, ProxyPoolGateway poolGateway, CandidateQueueManager queueManager, FullEvaluationTask complexTask, DegradationStrategy degradationStrategy, ApplicationEventPublisher eventPublisher) {
         super(properties, persistenceGateway, evaluator, poolGateway, queueManager, complexTask);
         this.degradationStrategy = degradationStrategy;
         this.eventPublisher = eventPublisher;

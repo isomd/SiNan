@@ -6,9 +6,8 @@ import io.github.tml.delegate.ProxyMonitor;
 import io.github.tml.domain.config.MonitorProperties;
 import io.github.tml.domain.gateway.PersistenceGateway;
 import io.github.tml.domain.gateway.ProxyPoolGateway;
-import io.github.tml.domain.model.EvaluationResult;
 import io.github.tml.domain.model.ProxyWrapper;
-import io.github.tml.domain.task.ComplexEvaluationTask;
+import io.github.tml.domain.task.FullEvaluationTask;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -26,7 +25,7 @@ public abstract class InitializeProxyMonitor implements ProxyMonitor {
     protected final ProxyEvaluator evaluator;
     protected final ProxyPoolGateway poolGateway;
     protected final CandidateQueueManager queueManager;
-    protected final ComplexEvaluationTask complexTask;
+    protected final FullEvaluationTask complexTask;
     private final ExecutorService evaluationExecutor = Executors.newWorkStealingPool();
 
     @Override

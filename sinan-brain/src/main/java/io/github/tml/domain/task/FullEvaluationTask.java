@@ -1,4 +1,3 @@
-// ComplexEvaluationTask.java
 package io.github.tml.domain.task;
 
 import io.github.tml.delegate.CandidateQueueManager;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class ComplexEvaluationTask {
+public class FullEvaluationTask {
     private final ProxyEvaluator evaluator;
     private final CandidateQueueManager queueManager;
     private final PersistenceGateway persistenceGateway;
