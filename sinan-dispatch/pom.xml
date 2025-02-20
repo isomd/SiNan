@@ -15,6 +15,28 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <assistant.version>1.1.1</assistant.version>
+        <common.version>1.0-SNAPSHOT</common.version>
     </properties>
+
+    <dependencies>
+        <!--Assistant-->
+        <dependency>
+            <groupId>io.github.geniusay</groupId>
+            <artifactId>assistant-boot-start</artifactId>
+            <version>${assistant.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.tml</groupId>
+            <artifactId>sinan-common</artifactId>
+            <version>${common.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>
