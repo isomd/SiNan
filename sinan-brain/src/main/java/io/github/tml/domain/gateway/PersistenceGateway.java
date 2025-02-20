@@ -16,9 +16,8 @@ public interface PersistenceGateway {
      */
     List<ProxyWrapper> loadInitialProxies(int limit, int offset);
 
-    default List<ProxyWrapper> getCandidateProxies(double threshold, int limit) {
-        return getCandidateProxies(threshold, Double.MAX_VALUE, limit);
-    }
-
+    /**
+     * 补充代理
+     */
     List<ProxyWrapper> getCandidateProxies(double minScore, double maxScore, int limit);
 }

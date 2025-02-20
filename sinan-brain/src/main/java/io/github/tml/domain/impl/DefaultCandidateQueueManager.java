@@ -22,6 +22,11 @@ public class DefaultCandidateQueueManager implements CandidateQueueManager {
     private final PersistenceGateway persistenceGateway;
 
     @Override
+    public void initializeCandidates() {
+
+    }
+
+    @Override
     public void batchAddToCandidate(List<ProxyWrapper> proxies) {
         proxies.parallelStream()
                 .filter(this::isValidCandidate)
@@ -43,18 +48,8 @@ public class DefaultCandidateQueueManager implements CandidateQueueManager {
     }
 
     @Override
-    public void initializeCandidates() {
-        List<ProxyWrapper> proxies = persistenceGateway.getCandidateProxies(0.0, 200);
-        candidateQueue.addAll(proxies);
-    }
-
-    @Override
     public void refillCandidates(int targetSize) {
-        int need = targetSize - candidateQueue.size();
-        if (need > 0) {
-            List<ProxyWrapper> newProxies = persistenceGateway.getCandidateProxies(0.0, need);
-            candidateQueue.addAll(newProxies);
-        }
+
     }
 
     @Override

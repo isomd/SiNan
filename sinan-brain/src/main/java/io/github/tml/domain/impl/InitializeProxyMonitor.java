@@ -68,6 +68,7 @@ public abstract class InitializeProxyMonitor implements ProxyMonitor {
         poolGateway.promoteToActive(partitioned.get(true));
 
         // 不合格代理进入候选队列
+        queueManager.initializeCandidates();
         queueManager.batchAddToCandidate(partitioned.get(false));
     }
 }

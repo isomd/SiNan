@@ -2,7 +2,6 @@ package io.github.tml.domain.model;
 
 import lombok.Data;
 
-import java.net.InetSocketAddress;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 public class ProxyWrapper {
 
     private final String proxyId;
-    private final InetSocketAddress endpoint;
     private final LocalDateTime lastChecked;
     private final double responseTime;
     private final double successRate;
@@ -24,8 +22,7 @@ public class ProxyWrapper {
     public ProxyWrapper withEvaluation(EvaluationResult result) {
         ProxyWrapper wrapper = new ProxyWrapper(
                 this.proxyId,
-                this.endpoint,
-                LocalDateTime.now(), 
+                LocalDateTime.now(),
                 this.responseTime,
                 this.successRate
         );
