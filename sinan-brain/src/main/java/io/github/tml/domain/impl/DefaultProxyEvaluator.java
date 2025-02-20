@@ -2,6 +2,7 @@ package io.github.tml.domain.impl;
 
 import io.github.tml.delegate.ProxyEvaluator;
 import io.github.tml.domain.config.MonitorProperties;
+import io.github.tml.domain.enums.EvaluationMode;
 import io.github.tml.domain.model.EvaluationResult;
 import io.github.tml.domain.model.ProxyWrapper;
 import io.github.tml.domain.strategy.scoring.ScoringStrategy;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+import static io.github.tml.domain.enums.EvaluationType.FULL_EVALUATION;
+import static io.github.tml.domain.enums.EvaluationType.QUICK_CHECK;
 import static io.github.tml.domain.model.EvaluationResult.EvaluationStatus.*;
 
 /**
@@ -40,7 +43,7 @@ public class DefaultProxyEvaluator implements ProxyEvaluator {
     private EvaluationResult doQuickEvaluation(ProxyWrapper proxy) {
         double score = quickScoring.countScore(proxy);
         return EvaluationResult.builder()
-                .evaluationType(EvaluationResult.EvaluationType.QUICK_CHECK)
+                .evaluationType(QUICK_CHECK)
                 .score(score)
                 .status(score >= properties.getEvaluation().getQuick().getPassThreshold() ? ACTIVE : CANDIDATE)
                 .metrics(Map.of(
@@ -53,7 +56,7 @@ public class DefaultProxyEvaluator implements ProxyEvaluator {
     private EvaluationResult doFullEvaluation(ProxyWrapper proxy) {
         double score = fullScoring.countScore(proxy);
         return EvaluationResult.builder()
-                .evaluationType(EvaluationResult.EvaluationType.FULL_EVALUATION)
+                .evaluationType(FULL_EVALUATION)
                 .score(score)
                 .status(score >= properties.getEvaluation().getFull().getPassThreshold() ? ACTIVE : DISCARDED)
                 .metrics(Map.of(

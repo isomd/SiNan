@@ -1,5 +1,6 @@
 package io.github.tml.domain.model;
 
+import io.github.tml.domain.enums.EvaluationType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,11 +24,6 @@ public class EvaluationResult {
 
     public enum EvaluationStatus {
         ACTIVE, CANDIDATE, DISCARDED
-    }
-
-    public enum EvaluationType {
-        QUICK_CHECK,
-        FULL_EVALUATION
     }
 
     public boolean isQualifiedForPool(double threshold) {

@@ -1,5 +1,6 @@
 package io.github.tml.delegate;
 
+import io.github.tml.domain.enums.EvaluationMode;
 import io.github.tml.domain.model.EvaluationResult;
 import io.github.tml.domain.model.ProxyWrapper;
 
@@ -17,11 +18,6 @@ public interface ProxyEvaluator {
      * 评估代理质量
      */
     EvaluationResult evaluate(ProxyWrapper proxyWrapper, EvaluationMode mode);
-
-    enum EvaluationMode {
-        QUICK,
-        FULL
-    }
 
     default List<ProxyWrapper> evaluateBatch(List<ProxyWrapper> proxies, EvaluationMode mode) {
         return proxies.parallelStream()

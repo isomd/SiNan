@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static io.github.tml.domain.enums.EvaluationMode.FULL;
+
 @Component
 @RequiredArgsConstructor
 public class FullEvaluationTask {
@@ -32,7 +34,7 @@ public class FullEvaluationTask {
         // 3. 执行深度评估
         List<ProxyWrapper> evaluated = evaluator.evaluateBatch(
             candidates, 
-            ProxyEvaluator.EvaluationMode.FULL
+            FULL
         );
 
         // 4. 处理结果

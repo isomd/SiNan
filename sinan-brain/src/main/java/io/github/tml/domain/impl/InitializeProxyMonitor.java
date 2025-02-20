@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
-
+import static io.github.tml.domain.enums.EvaluationMode.QUICK;
 
 @RequiredArgsConstructor
 public abstract class InitializeProxyMonitor implements ProxyMonitor {
@@ -30,17 +30,17 @@ public abstract class InitializeProxyMonitor implements ProxyMonitor {
 
     @Override
     public void initialize() {
+
+        // 从数据库初始化一批代理
         List<ProxyWrapper> rawProxies = persistenceGateway.loadInitialProxies(
                 properties.getInitial().getLoadSize(),
                 0
         );
 
-        List<ProxyWrapper> quickEvaluated = evaluator.evaluateBatch(
-                rawProxies,
-                ProxyEvaluator.EvaluationMode.QUICK
-        );
+        // 进行一次简单评估
+        processQuickEvaluationResults(rawProxies);
 
-        processQuickEvaluationResults(quickEvaluated);
+        // 进行一次复杂评估
         evaluationExecutor.submit(this::performInitialComplexEvaluation);
     }
 
@@ -51,10 +51,15 @@ public abstract class InitializeProxyMonitor implements ProxyMonitor {
         );
     }
 
-    private void processQuickEvaluationResults(List<ProxyWrapper> proxies) {
+    private void processQuickEvaluationResults(List<ProxyWrapper> rawProxies) {
+        List<ProxyWrapper> quickEvaluated = evaluator.evaluateBatch(
+                rawProxies,
+                QUICK
+        );
+
         double threshold = properties.getInitial().getInitThreshold();
 
-        Map<Boolean, List<ProxyWrapper>> partitioned = proxies.stream()
+        Map<Boolean, List<ProxyWrapper>> partitioned = quickEvaluated.stream()
                 .collect(Collectors.partitioningBy(
                         p -> p.getEvaluationResult().isQualifiedForPool(threshold)
                 ));
