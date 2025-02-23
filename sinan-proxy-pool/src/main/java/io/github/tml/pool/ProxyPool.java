@@ -4,9 +4,7 @@ import java.util.List;
 
 public interface ProxyPool extends AutoCloseable{
 
-    void init();
-
-    void destroy();
+    void destroy(PooledProxyObject proxyObject);
 
     PooledProxyObject borrow();
 
