@@ -1,8 +1,9 @@
 package io.github.tml.delegate;
 
+import io.github.tml.common.dispatch.IResponse;
+import io.github.tml.common.dispatch.Parameter;
 import okhttp3.Request;
-import okhttp3.Response;
 
 public interface DispatchDelegate {
-    Response dispatch(Request request);
+    IResponse dispatch(Parameter request);
 }

@@ -2,13 +2,13 @@ package io.github.tml.delegate;
 
 import io.github.tml.common.ProxyIp;
 import io.github.tml.common.dispatch.IRequestClient;
+import io.github.tml.common.dispatch.IResponse;
+import io.github.tml.common.dispatch.Parameter;
 import io.github.tml.core.client.ClientFactory;
+import io.github.tml.core.client.okhttp.OkHttpResponse;
 import io.github.tml.core.dispatcher.OkhttpDispatcher;
-import io.github.tml.core.retry.DefaultRetryStrategy;
 import io.github.tml.core.retry.RetryStrategy;
 import lombok.Setter;
-import okhttp3.Request;
-import okhttp3.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +31,7 @@ public class OkhttpDispatchDelegate implements DispatchDelegate {
     }
 
     @Override
-    public Response dispatch(Request request) {
-
+    public IResponse dispatch(Parameter request) {
+        return null;
     }
 }
