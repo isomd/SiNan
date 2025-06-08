@@ -5,8 +5,11 @@ import io.github.tml.common.ProxyIp;
 import io.github.tml.common.dispatch.IResponse;
 import io.github.tml.constant.Protocol;
 import io.github.tml.common.dispatch.Parameter;
+import lombok.Builder;
 import okhttp3.*;
 import okio.BufferedSink;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,6 +19,7 @@ import java.util.Map;
 
 public class OkHttpRequestClient extends AbstractRequestClient<Request> {
     private static final Map<Protocol, Proxy.Type> types;
+    private static final Logger log = LoggerFactory.getLogger(OkHttpRequestClient.class);
 
     static {
         types = new HashMap<>();
@@ -38,14 +42,32 @@ public class OkHttpRequestClient extends AbstractRequestClient<Request> {
     }
 
     @Override
-    public IResponse request(Parameter param) throws IOException {
-        if(param == null) throw new RuntimeException("param is null");
-        Response response = this.client.newCall(transfer(param)).execute();
-        return new OkHttpResponse(response);
+    public IResponse request(Parameter param) {
+        if(param == null) return null;
+        try {
+            Response response = this.client.newCall(transfer(param)).execute();
+            return new OkHttpResponse(response);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return null;
+        }
     }
 
     @Override
     public Request transfer(Parameter request) {
         return null;
+    }
+
+    public static class OkhttpClientBuilder{
+        private ProxyIp proxy;
+
+        public OkhttpClientBuilder proxy(ProxyIp proxy) {
+            this.proxy = proxy;
+            return this;
+        }
+
+        public OkHttpRequestClient build(){
+            return new OkHttpRequestClient(proxy);
+        }
     }
 }

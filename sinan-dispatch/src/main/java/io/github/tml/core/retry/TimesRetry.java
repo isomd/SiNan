@@ -7,15 +7,15 @@ import io.github.tml.core.retry.timeout.TimeoutStrategy;
 import lombok.Setter;
 
 @Setter
-public class TimesRetry implements RetryStrategy{
-    private Integer retryTimes;
+public class TimesRetry extends RetryStrategy{
 
-    public TimesRetry(Integer retryTimes) {
-        this.retryTimes = retryTimes;
+
+    public TimesRetry(Integer retryTimes, TimeoutStrategy timeoutStrategy) {
+        super(retryTimes, timeoutStrategy);
     }
 
-    @Override
-    public IResponse doRetry(IRequestClient client, Parameter request, TimeoutStrategy timeoutStrategy) {
+    public IResponse retry(IRequestClient client, Parameter request, Long timeout) {
+
         return null;
     }
 }

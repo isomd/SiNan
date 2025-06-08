@@ -37,5 +37,18 @@ public class ProxyIp {
         this.port = port;
         this.protocol = Objects.requireNonNull(protocol);
     }
+    // TODO: 补充hashcode计算算法
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof ProxyIp) {
+            ProxyIp proxyIp = (ProxyIp) obj;
+            return this.protocol.equals(proxyIp.getProtocol()) && this.ip.equals(proxyIp.getIp()) && this.port == proxyIp.getPort();
+        }
+        return false;
+    }
 }
